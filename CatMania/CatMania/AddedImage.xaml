@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="CatMania.AddedImage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:catMania="clr-namespace:CatMania"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    d:DataContext="{d:DesignInstance Type=catMania:PictureItem}"
+    d:DesignHeight="200" 
+    d:DesignWidth="220">
+    
+    <Grid x:Name="LayoutRoot" MouseLeftButtonDown="Clicked">
+        
+        <Button x:Name="Button"
+                Height="65" 
+                Visibility="{Binding IsSelected, Converter={StaticResource btvc}}"
+                Width="65" 
+                IsEnabled="True"
+                Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding}"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Right" 
+                Margin=" -10 -10 "
+                Content="X" 
+                FontSize="24"
+                BorderThickness="2" 
+                Padding="0" />
+
+        <Image Source="{Binding PictureUri}" />
+    </Grid>
+</UserControl>
