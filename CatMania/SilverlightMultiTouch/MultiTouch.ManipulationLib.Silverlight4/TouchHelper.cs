@@ -1,39 +1,4 @@
-﻿//Microsoft Surface Manipulations and Inertia Sample for Microsoft Silverlight
-//http://www.microsoft.com/downloads/details.aspx?displaylang=en&FamilyID=4b281bde-9b01-4890-b3d4-b3b45ca2c2e4
-//Overview
-//Multitouch support in Windows 7 allows applications to blur the lines between computers and the real 
-//world. Touch-optimized applications entice users to touch the objects on the screen, drag them across 
-//the screen, rotate and resize them, and flick them across the screen by using their fingers. 
-//The manipulations and inertia processor classes allow graphical user interface (GUI) components to move 
-//in a natural and intuitive way. Manipulations enable users to move, rotate, and resize components by 
-//using their fingers. Inertia enables users to move components by applying forces on the components, 
-//such as flicking the component across the screen. The contents of this sample are covered by the 
-//Microsoft Surface SDK 1.0 SP1 license agreement, with any additional restrictions noted in the Readme 
-//file. The purpose of this download is educational use only and is made available "as-is" without support.
-
-//---------------------------------------------------------------------
-// <copyright file="TouchHelper.cs" company="Microsoft">
-//    Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//---------------------------------------------------------------------
-
-// ****************************************************************************
-// <copyright file="TouchHelper.cs" company="Davide Zordan">
-// Copyright © Davide Zordan 2010-2011
-// </copyright>
-// ****************************************************************************
-// <author>Davide Zordan</author>
-// <email>info@davidezordan.net</email>
-// <date>01.01.2011</date>
-// <project>MultiTouch.ManipulationLib.Silverlight4</project>
-// <web>http://multitouch.codeplex.com/</web>
-// <license>
-// See http://multitouch.codeplex.com/license.
-// </license>
-// <LastBaseLevel>BL0001</LastBaseLevel>
-// ****************************************************************************
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
@@ -41,8 +6,6 @@ using System.Windows.Media;
 
 namespace MultiTouch.ManipulationLib.Silverlight4
 {
-    
-
     /// <summary>
     /// Passes data for TouchReported event.
     /// </summary>

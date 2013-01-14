@@ -41,7 +41,7 @@
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.new.rest.png" Text="add" Click="OnAddClick">
                 
             </shell:ApplicationBarIconButton>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.edit.rest.png" Text="edit"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.edit.rest.png" Text="undo" Click="UndoClick"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save" Click="SavePictureClick"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="pick photo" Click="PickPhoto"/>

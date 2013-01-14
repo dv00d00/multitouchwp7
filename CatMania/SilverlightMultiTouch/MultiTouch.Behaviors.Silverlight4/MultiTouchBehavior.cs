@@ -1,45 +1,4 @@
-﻿// ****************************************************************************
-// <copyright file="MultiTouchBehavior.cs" company="Laurent Bugnion">
-// Copyright © Laurent Bugnion 2010
-// </copyright>
-// ****************************************************************************
-// <author>Laurent Bugnion</author>
-// <email>laurent@galasoft.ch</email>
-// <date>10.07.2010</date>
-// <project>MultiTouch.Behaviors.Silverlight4</project>
-// <web>http://multitouch.codeplex.com/</web>
-// <license>
-// See http://multitouch.codeplex.com/license.
-// </license>
-// <LastBaseLevel>BL0001</LastBaseLevel>
-// ****************************************************************************
-
-// ****************************************************************************
-// <copyright file="MultiTouchBehavior.cs" company="Davide Zordan">
-// Copyright © Davide Zordan 2010-2011
-// </copyright>
-// ****************************************************************************
-// <author>Davide Zordan</author>
-// <email>info@davidezordan.net</email>
-// <date>12.08.2011</date>
-// <project>MultiTouch.Behaviors.Silverlight4</project>
-// <web>http://multitouch.codeplex.com/</web>
-// <license>
-// See http://multitouch.codeplex.com/license.
-// </license>
-// ****************************************************************************
-// SAMPLE CODE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-// INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-// PARTICULAR PURPOSE, ARE DISCLAIMED.  IN NO EVENT SHALL ESRI OR CONTRIBUTORS
-// BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) SUSTAINED BY YOU OR A THIRD PARTY, HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT; STRICT LIABILITY; OR TORT ARISING
-// IN ANY WAY OUT OF THE USE OF THIS SAMPLE CODE, EVEN IF ADVISED OF THE
-// POSSIBILITY OF SUCH DAMAGE TO THE FULL EXTENT ALLOWED BY APPLICABLE LAW.
-
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Interactivity;
 using System.Windows.Media;

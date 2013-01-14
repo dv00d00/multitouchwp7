@@ -1,45 +1,4 @@
-﻿// ****************************************************************************
-//Microsoft Surface Manipulations and Inertia Sample for Microsoft Silverlight
-//http://www.microsoft.com/downloads/details.aspx?displaylang=en&FamilyID=4b281bde-9b01-4890-b3d4-b3b45ca2c2e4
-//The contents of this Sample download (Microsoft Surface Silverlight Manipulations and Interia Sample.zip) are covered by the Microsoft Surface SDK 1.0 SP1 license agreement, with any additional restrictions noted here.  The purpose of this download is for educational use only and is made available AS-IS with no support.
-//This package contains APIs for using manipulation and inertia in Silverlight.
-//Multi-touch support in Microsoft Windows 7 allows applications to blur the lines between computers and the real world.  Touch-optimized applications entice users to touch the objects on the screen, drag them across the screen, rotate and resize them, and flick them across the screen using their fingers.
-//Manipulations and Inertia processor classes allow graphical user interface (GUI) components to move in a natural and intuitive way. Manipulations enable users to move, rotate, and resize components by using their fingers. Inertia enables users to move components by applying forces on the components, such as flicking the component across the screen.
-//Contents:
-//Binary
-//    \System.Windows.Input.Manipulations.dll
-//This Silverlight assembly contains APIs which applications and controls can use to implement multi-touch manipulations & inertia gesture functionality.  This is equivalent to the System.Windows.Input.Manipulation assembly included in the Microsoft .NET Framework 4.0 and is provided for educational purposes only (this sample version of this assembly is not redistributable for commercial environments).  For API documentation, please refer to http://msdn.microsoft.com/en-us/library/system.windows.input.manipulations(VS.100).aspx
-//Sample source
-//    \Sample\Code
-//This folder contains a Visual Studio project demonstrates the usage of the ManipulationProcessor2D and InertiaProcessor2D APIs to create UI elements which can be resized, rotated, moved, and flicked around the screen.
-// ****************************************************************************
-
-// ****************************************************************************
-// <copyright file="MultiTouchManipulationBehavior.cs" company="Davide Zordan">
-// Copyright © Davide Zordan 2010-2011
-// </copyright>
-// ****************************************************************************
-// <author>Davide Zordan</author>
-// <email>info@davidezordan.net</email>
-// <date>05.08.2011</date>
-// <project>MultiTouch.Behaviors.Silverlight4</project>
-// <web>http://multitouch.codeplex.com/</web>
-// <license>
-// See http://multitouch.codeplex.com/license.
-// </license>
-// ****************************************************************************
-// SAMPLE CODE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-// INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-// PARTICULAR PURPOSE, ARE DISCLAIMED.  IN NO EVENT SHALL ESRI OR CONTRIBUTORS
-// BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) SUSTAINED BY YOU OR A THIRD PARTY, HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT; STRICT LIABILITY; OR TORT ARISING
-// IN ANY WAY OUT OF THE USE OF THIS SAMPLE CODE, EVEN IF ADVISED OF THE
-// POSSIBILITY OF SUCH DAMAGE TO THE FULL EXTENT ALLOWED BY APPLICABLE LAW.
-
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Interactivity;
 using System;
@@ -59,6 +18,35 @@ using System.Windows.Controls.Primitives;
 using System.Diagnostics;
 #endif
 
+public static class CommandStorage
+{
+    public static Stack<TransformCommand> Commands = new Stack<TransformCommand>();
+}
+
+public class TransformCommand
+{
+    public Action BeforeLogic;
+    public MatrixTransform AfterTransform { get; set; }
+    public MatrixTransform OriginalTransform { get; set; }
+    public FrameworkElement AssociatedObject { get; set; }
+
+    public Point BeforeCenter;
+    public Point AfterCenter;
+
+    public void Do()
+    {
+        this.AssociatedObject.RenderTransform = AfterTransform;
+    }
+
+    public void Undo()
+    {
+
+        BeforeLogic();
+        this.AssociatedObject.RenderTransform = OriginalTransform;
+
+        
+    }
+}
 
 namespace MultiTouch.Behaviors.Silverlight4
 {
@@ -67,6 +55,10 @@ namespace MultiTouch.Behaviors.Silverlight4
     /// </summary>
     internal class MultiTouchManipulationBehavior : Behavior<FrameworkElement>, IDisposable
     {
+
+        private MatrixTransform Before;
+        private MatrixTransform After;
+
         /// <summary>
         /// Reset the Touch handlers for the AssociatedObject
         /// </summary>
@@ -630,8 +622,12 @@ namespace MultiTouch.Behaviors.Silverlight4
         /// </summary>
         private void OnManipulationStarted(object sender, Manipulation2DStartedEventArgs e)
         {
+            Before = this.AssociatedObject.RenderTransform as MatrixTransform;
+            BeforeCenter = this._center;
             StopInertia();
         }
+
+        protected Point BeforeCenter { get; set; }
 
         /// <summary>
         /// Here when manipulation gives a delta.
@@ -654,77 +650,93 @@ namespace MultiTouch.Behaviors.Silverlight4
         /// </summary>
         private void OnManipulationCompleted(object sender, Manipulation2DCompletedEventArgs e)
         {
-            // Get the inital inertia values
-            var initialVelocity = new Vector(e.Velocities.LinearVelocityX, e.Velocities.LinearVelocityY);
-            float angularVelocity = e.Velocities.AngularVelocity;
-            float expansionVelocity = e.Velocities.ExpansionVelocityX;
+            
+            //// Get the inital inertia values
+            //var initialVelocity = new Vector(e.Velocities.LinearVelocityX, e.Velocities.LinearVelocityY);
+            //float angularVelocity = e.Velocities.AngularVelocity;
+            //float expansionVelocity = e.Velocities.ExpansionVelocityX;
 
-            bool startFlick = false;
+            //bool startFlick = false;
 
-            // Rotate and scale around the center of the item
-            _inertiaProcessor.InitialOriginX = (float)_center.X;
-            _inertiaProcessor.InitialOriginY = (float)_center.Y;
+            //// Rotate and scale around the center of the item
+            //_inertiaProcessor.InitialOriginX = (float)_center.X;
+            //_inertiaProcessor.InitialOriginY = (float)_center.Y;
 
-            // set initial velocity if translate flicks are allowed
-            double velocityLengthSquared = initialVelocity.LengthSquared;
-            if (IsTranslateEnabled && velocityLengthSquared > MinimumFlickVelocity * MinimumFlickVelocity)
-            {
-                const double maximumLengthSquared = MaximumFlickVelocityFactor * MinimumFlickVelocity * MinimumFlickVelocity;
-                if (velocityLengthSquared > maximumLengthSquared)
-                {
-                    initialVelocity = Math.Sqrt(maximumLengthSquared / velocityLengthSquared) * initialVelocity;
-                }
+            //// set initial velocity if translate flicks are allowed
+            //double velocityLengthSquared = initialVelocity.LengthSquared;
+            //if (IsTranslateEnabled && velocityLengthSquared > MinimumFlickVelocity * MinimumFlickVelocity)
+            //{
+            //    const double maximumLengthSquared = MaximumFlickVelocityFactor * MinimumFlickVelocity * MinimumFlickVelocity;
+            //    if (velocityLengthSquared > maximumLengthSquared)
+            //    {
+            //        initialVelocity = Math.Sqrt(maximumLengthSquared / velocityLengthSquared) * initialVelocity;
+            //    }
 
-                startFlick = IsInertiaEnabled;
-                _inertiaProcessor.TranslationBehavior.InitialVelocityX = (float)initialVelocity.X;
-                _inertiaProcessor.TranslationBehavior.InitialVelocityY = (float)initialVelocity.Y;
-            }
-            else
-            {
-                _inertiaProcessor.TranslationBehavior.InitialVelocityX = 0.0f;
-                _inertiaProcessor.TranslationBehavior.InitialVelocityY = 0.0f;
-            }
+            //    startFlick = IsInertiaEnabled;
+            //    _inertiaProcessor.TranslationBehavior.InitialVelocityX = (float)initialVelocity.X;
+            //    _inertiaProcessor.TranslationBehavior.InitialVelocityY = (float)initialVelocity.Y;
+            //}
+            //else
+            //{
+            //    _inertiaProcessor.TranslationBehavior.InitialVelocityX = 0.0f;
+            //    _inertiaProcessor.TranslationBehavior.InitialVelocityY = 0.0f;
+            //}
 
-            // set angular velocity if rotation flicks are allowed
-            if (Math.Abs(angularVelocity) >= MinimumAngularFlickVelocity)
-            {
-                const float maximumAngularFlickVelocity = MaximumFlickVelocityFactor * MinimumAngularFlickVelocity;
-                if (Math.Abs(angularVelocity) > maximumAngularFlickVelocity)
-                {
-                    angularVelocity = angularVelocity > 0 ? maximumAngularFlickVelocity : -maximumAngularFlickVelocity;
-                }
-                startFlick = IsInertiaEnabled;
-                _inertiaProcessor.RotationBehavior.InitialVelocity = angularVelocity;
-            }
-            else
-            {
-                _inertiaProcessor.RotationBehavior.InitialVelocity = 0.0f;
-            }
+            //// set angular velocity if rotation flicks are allowed
+            //if (Math.Abs(angularVelocity) >= MinimumAngularFlickVelocity)
+            //{
+            //    const float maximumAngularFlickVelocity = MaximumFlickVelocityFactor * MinimumAngularFlickVelocity;
+            //    if (Math.Abs(angularVelocity) > maximumAngularFlickVelocity)
+            //    {
+            //        angularVelocity = angularVelocity > 0 ? maximumAngularFlickVelocity : -maximumAngularFlickVelocity;
+            //    }
+            //    startFlick = IsInertiaEnabled;
+            //    _inertiaProcessor.RotationBehavior.InitialVelocity = angularVelocity;
+            //}
+            //else
+            //{
+            //    _inertiaProcessor.RotationBehavior.InitialVelocity = 0.0f;
+            //}
 
-            // set expansion velocity if scale flicks are allowed
-            if (IsScaleEnabled && Math.Abs(expansionVelocity) >= MinimumExpansionFlickVelocity)
-            {
-                const float maximumExpansionFlickVelocity = MaximumFlickVelocityFactor * MinimumExpansionFlickVelocity;
-                if (Math.Abs(expansionVelocity) >= maximumExpansionFlickVelocity)
-                {
-                    expansionVelocity = expansionVelocity > 0 ? maximumExpansionFlickVelocity : -maximumExpansionFlickVelocity;
-                }
-                startFlick = IsInertiaEnabled;
-                _inertiaProcessor.ExpansionBehavior.InitialVelocityX = expansionVelocity;
-                _inertiaProcessor.ExpansionBehavior.InitialVelocityY = expansionVelocity;
-                _inertiaProcessor.ExpansionBehavior.InitialRadius = (float)_radius;
-            }
-            else
-            {
-                _inertiaProcessor.ExpansionBehavior.InitialVelocityX = 0.0f;
-                _inertiaProcessor.ExpansionBehavior.InitialVelocityY = 0.0f;
-                _inertiaProcessor.ExpansionBehavior.InitialRadius = 1.0f;
-            }
+            //// set expansion velocity if scale flicks are allowed
+            //if (IsScaleEnabled && Math.Abs(expansionVelocity) >= MinimumExpansionFlickVelocity)
+            //{
+            //    const float maximumExpansionFlickVelocity = MaximumFlickVelocityFactor * MinimumExpansionFlickVelocity;
+            //    if (Math.Abs(expansionVelocity) >= maximumExpansionFlickVelocity)
+            //    {
+            //        expansionVelocity = expansionVelocity > 0 ? maximumExpansionFlickVelocity : -maximumExpansionFlickVelocity;
+            //    }
+            //    startFlick = IsInertiaEnabled;
+            //    _inertiaProcessor.ExpansionBehavior.InitialVelocityX = expansionVelocity;
+            //    _inertiaProcessor.ExpansionBehavior.InitialVelocityY = expansionVelocity;
+            //    _inertiaProcessor.ExpansionBehavior.InitialRadius = (float)_radius;
+            //}
+            //else
+            //{
+            //    _inertiaProcessor.ExpansionBehavior.InitialVelocityX = 0.0f;
+            //    _inertiaProcessor.ExpansionBehavior.InitialVelocityY = 0.0f;
+            //    _inertiaProcessor.ExpansionBehavior.InitialRadius = 1.0f;
+            //}
 
-            if (startFlick)
-            {
-                _inertiaTimer.Start();
-            }
+            //if (startFlick)
+            //{
+            //    _inertiaTimer.Start();
+            //}
+
+            
+            After = (MatrixTransform)this.AssociatedObject.RenderTransform;
+
+            CommandStorage.Commands.Push(new TransformCommand
+                                             {
+                                                 BeforeLogic = () =>
+                                                               {
+                                                                   _center = BeforeCenter;
+                                                                   UpdatePivot(IsPivotEnabled);
+                                                               },
+                                                 AfterTransform = After,
+                                                 OriginalTransform = Before, 
+                                                 AssociatedObject = this.AssociatedObject
+                                             });
         }
 
         /// <summary>

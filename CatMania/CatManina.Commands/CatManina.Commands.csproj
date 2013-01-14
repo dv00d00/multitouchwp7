@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F0B37430-3509-4129-B2FC-E802B20F937B}</ProjectGuid>
+    <ProjectGuid>{648CDE84-8298-4B76-AC2B-846D67FFDF47}</ProjectGuid>
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MultiTouch.Behaviors.Silverlight.WP71</RootNamespace>
-    <AssemblyName>MultiTouch.Behaviors.Silverlight.WP71</AssemblyName>
+    <RootNamespace>CatManina.Commands</RootNamespace>
+    <AssemblyName>CatManina.Commands</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
@@ -23,7 +23,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\_Output\WP71\Debug\</OutputPath>
+    <OutputPath>Bin\Debug</OutputPath>
     <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -33,7 +33,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\_Output\WP71\Release\</OutputPath>
+    <OutputPath>Bin\Release</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -44,35 +44,20 @@
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Input.Manipulations">
-      <HintPath>..\MultiTouch.ManipulationLib.Silverlight4\Lib\System.Windows.Input.Manipulations.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\MultiTouch.Behaviors.Silverlight4\Gestures\DoubleTapBehavior.cs">
-      <Link>Gestures\DoubleTapBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\MultiTouch.Behaviors.Silverlight4\Interfaces\IMultiTouchBehavior.cs">
-      <Link>Interfaces\IMultiTouchBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\MultiTouch.Behaviors.Silverlight4\MultiTouchBehavior.cs">
-      <Link>MultiTouchBehavior.cs</Link>
-    </Compile>
-    <Compile Include="..\MultiTouch.Behaviors.Silverlight4\MultiTouchBehavior.Silverlight4.cs">
-      <Link>MultiTouchBehavior.Silverlight4.cs</Link>
-    </Compile>
-    <Compile Include="..\MultiTouch.Behaviors.Silverlight4\MultiTouchManipulationBehavior.cs">
-      <Link>MultiTouchManipulationBehavior.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransformState.cs" />
+    <Compile Include="TransformCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MultiTouch.ManipulationLib.Silverlight4\MultiTouch.ManipulationLib.Silverlight4.csproj">
+    <ProjectReference Include="..\SilverlightMultiTouch\MultiTouch.Behaviors.Silverlight.WP71\MultiTouch.Behaviors.Silverlight.WP71.csproj">
+      <Project>{F0B37430-3509-4129-B2FC-E802B20F937B}</Project>
+      <Name>MultiTouch.Behaviors.Silverlight.WP71</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SilverlightMultiTouch\MultiTouch.ManipulationLib.Silverlight4\MultiTouch.ManipulationLib.Silverlight4.csproj">
       <Project>{AA3A860C-D205-4F6A-9E6B-44713AE1DA18}</Project>
       <Name>MultiTouch.ManipulationLib.Silverlight4</Name>
     </ProjectReference>

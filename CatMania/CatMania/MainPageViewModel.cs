@@ -4,49 +4,6 @@ using System.Windows.Input;
 
 namespace CatMania
 {
-    public interface IPictureHolder
-    {
-        void AddPicture(PictureItem picture);
-
-        void DeletePicture(Guid pictureId);
-
-        void Save();
-    }
-
-    public interface IPictureSelector
-    {
-        PictureItem SelectPicture();
-    }
-
-    public class PictureItem : ViewModelBase
-    {
-        private bool isSelected;
-
-        public Guid Id { get; set; }
-
-        public Uri PictureUri { get; set; }
-
-        public ICommand DeleteCommand { get; set; }
-
-        public ICommand SelectCommand { get; set; }
-
-        public bool IsSelected
-        {
-            get { return isSelected; }
-            set
-            {
-                if (value.Equals(isSelected)) return;
-                isSelected = value;
-                OnPropertyChanged(() => IsSelected);
-            }
-        }
-    }
-
-    public interface IAvailablePictures
-    {
-        void SelectPicture(PictureItem pictureItem);
-    }
-
     public class MainPageViewModel : ViewModelBase, IAvailablePictures
     {
         private readonly IPictureHolder pictureHolder;

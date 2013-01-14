@@ -1,24 +1,3 @@
-//Microsoft Surface Manipulations and Inertia Sample for Microsoft Silverlight
-//http://www.microsoft.com/downloads/details.aspx?displaylang=en&FamilyID=4b281bde-9b01-4890-b3d4-b3b45ca2c2e4
-//Overview
-//Multitouch support in Windows 7 allows applications to blur the lines between computers and the real 
-//world. Touch-optimized applications entice users to touch the objects on the screen, drag them across 
-//the screen, rotate and resize them, and flick them across the screen by using their fingers. 
-//The manipulations and inertia processor classes allow graphical user interface (GUI) components to move 
-//in a natural and intuitive way. Manipulations enable users to move, rotate, and resize components by 
-//using their fingers. Inertia enables users to move components by applying forces on the components, 
-//such as flicking the component across the screen. The contents of this sample are covered by the 
-//Microsoft Surface SDK 1.0 SP1 license agreement, with any additional restrictions noted in the Readme 
-//file. The purpose of this download is educational use only and is made available "as-is" without support.
-
-
-
-//---------------------------------------------------------------------
-// <copyright file="Vector.cs" company="Microsoft">
-//    Copyright (c) Microsoft Corporation.  All rights reserved.
-// </copyright>
-//---------------------------------------------------------------------
-
 using System;
 using System.Windows;
 

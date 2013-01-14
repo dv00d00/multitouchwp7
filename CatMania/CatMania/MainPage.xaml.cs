@@ -27,19 +27,24 @@ namespace CatMania
         {
             this.mainPageViewModel.DeselectAll();
 
-            using (var stream = new MemoryStream())
+            Dispatcher.BeginInvoke(() =>
             {
-                var bitmap = new WriteableBitmap(ContentPanel, null);
-                bitmap.SaveJpeg(stream, bitmap.PixelWidth, bitmap.PixelHeight, 0, 100);
-                stream.Seek(0, SeekOrigin.Begin);
-
-                using (var mediaLibrary = new MediaLibrary())
+                using (var stream = new MemoryStream())
                 {
-                    mediaLibrary.SavePicture("Picture" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg", stream);
-                }
-            }
+                    var bitmap = new WriteableBitmap(ContentPanel, null);
+                    bitmap.SaveJpeg(stream, bitmap.PixelWidth, bitmap.PixelHeight, 0, 100);
+                    stream.Seek(0, SeekOrigin.Begin);
 
-            MessageBox.Show("Picture Saved...");
+                    using (var mediaLibrary = new MediaLibrary())
+                    {
+                        mediaLibrary.SavePicture(
+                            "Picture" + DateTime.Now.ToString("yyyyMMddHHmmssfff") + ".jpg",
+                            stream);
+                    }
+                }
+
+                MessageBox.Show("Picture Saved...");
+            });
         }
 
         private void SavePictureClick(object sender, EventArgs e)
@@ -70,7 +75,7 @@ namespace CatMania
             {
                 IsConstrainedToParentBounds = true,
                 IsScaleEnabled = true,
-                IsRotateEnabled = true,
+                // IsRotateEnabled = true,
                 IsTranslateEnabled = true,
                 IsInertiaEnabled = false,
                 IsPivotEnabled = true,
@@ -106,6 +111,15 @@ namespace CatMania
         private void OnAddClick(object sender, EventArgs e)
         {
             mainPageViewModel.AddPictureCommand.Execute(null);
+        }
+
+        private void UndoClick(object sender, EventArgs e)
+        {
+            if (CommandStorage.Commands.Count > 0)
+            {
+                var command = CommandStorage.Commands.Pop();
+                command.Undo();
+            }
         }
     }
 }

@@ -49,23 +49,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Phone" />
-    <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Xna.Framework" />
-    <Reference Include="Microsoft.Xna.Framework.Graphics" />
-    <Reference Include="MultiTouch.Behaviors.Silverlight.WP71, Version=0.6.7.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="MultiTouch.ManipulationLib.Silverlight4">
-      <HintPath>..\SilverlightMultiTouch\_Output\WP71\Debug\MultiTouch.ManipulationLib.Silverlight4.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Input.Manipulations">
-      <HintPath>..\SilverlightMultiTouch\_Output\WP71\Debug\System.Windows.Input.Manipulations.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
-    <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddedImage.xaml.cs">
@@ -75,12 +64,16 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="IAvailablePictures.cs" />
     <Compile Include="Infrastructure\BoolToVisibilityConverter.cs" />
     <Compile Include="Infrastructure\Storage.cs" />
+    <Compile Include="IPictureHolder.cs" />
+    <Compile Include="IPictureSelector.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainPageViewModel.cs" />
+    <Compile Include="PictureItem.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelBase.cs" />
@@ -130,7 +123,12 @@
     </Content>
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\SilverlightMultiTouch\MultiTouch.Behaviors.Silverlight.WP71\MultiTouch.Behaviors.Silverlight.WP71.csproj">
+      <Project>{F0B37430-3509-4129-B2FC-E802B20F937B}</Project>
+      <Name>MultiTouch.Behaviors.Silverlight.WP71</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
